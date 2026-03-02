@@ -1,1 +1,0 @@
-print("Cybersecurity Tracker Initialized")
