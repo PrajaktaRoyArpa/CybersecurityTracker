@@ -1,5 +1,3 @@
-print("Incident class started")
-
 class Incident:
     def __init__(self, incident_id, title, attack_type, severity, status): 
         self.incident_id = incident_id
