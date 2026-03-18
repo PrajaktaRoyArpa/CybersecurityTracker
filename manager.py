@@ -11,3 +11,10 @@ class IncidentManager:
         self.next_id += 1
         return incident
     
+    def list_incidents(self):
+        for incident in self.incidents:
+            incident.display()
+            print("------------------------------------------------")
+
+       
+    
