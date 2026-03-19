@@ -3,6 +3,17 @@ from rich.console import Console
 from models import Incident 
 
 class IncidentManager: 
+    def __init__(self):
+        self.incidents = []
+        self.next_id = 1
+
+    def create_incident(self, title, attack_type, severity):
+        status = "open"
+        incident = Incident(self.next_id, title, attack_type, severity, status)
+        self.incidents.append(incident)
+        self.next_id += 1
+        return incident
+    
     def list_incidents(self):
         console = Console()
         table = Table(title="Cybersecurity Incidents")
@@ -24,4 +35,10 @@ class IncidentManager:
 
         console.print(table)
        
+    def update_status(self, incident_id, new_status): 
+        for incident in self.incidents: 
+            if incident.incident_id == incident_id: 
+                incident.status = new_status
+                return True
+        return False
     
