@@ -1,3 +1,4 @@
+import json
 from rich.table import Table
 from rich.console import Console
 from models import Incident 
@@ -42,3 +43,41 @@ class IncidentManager:
                 return True
         return False
     
+    def delete_incident(self, incident_id):
+        for incident in self.incidents:
+            if incident.incident_id == incident_id:
+                self.incidents.remove(incident)
+                return True
+        return False
+    
+    def search_incidents(self, keyword=None, severity=None, status=None):
+        results = []
+        for incident in self.incidents:
+            if (keyword and keyword.lower() not in incident.title.lower()) 
+               continue
+            if severity and incident.severity.lower() != severity.lower():
+                continue
+            results.append(incident)
+        return results
+    
+    def display_incidents(self, incidents): 
+        console = Console()
+        table = Table(title="Search Results")
+        table.add_column("ID", justify="center", style="cyan", no_wrap=True)
+        table.add_column("Title", justify="center", style="magenta")
+        table.add_column("Attack Type", justify="center", style="green")
+        table.add_column("Severity", justify="center", style="red")
+        table.add_column("Status", justify="center", style="yellow")
+        for incident in incidents:
+            table.add_row(str(incident.incident_id), 
+                              incident.title, 
+                              incident.attack_type,
+                              incident.severity, 
+                              incident.status
+                        )
+        console.print(table)
+
+    
+    
+
+
