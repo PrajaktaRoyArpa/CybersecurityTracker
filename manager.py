@@ -53,7 +53,7 @@ class IncidentManager:
     def search_incidents(self, keyword=None, severity=None, status=None):
         results = []
         for incident in self.incidents:
-            if (keyword and keyword.lower() not in incident.title.lower()) 
+            if (keyword and keyword.lower() not in incident.title.lower()):
                continue
             if severity and incident.severity.lower() != severity.lower():
                 continue
@@ -77,7 +77,19 @@ class IncidentManager:
                         )
         console.print(table)
 
-    
+    def save_to_file(self, filename="incidents.json"):
+        data = []
+        for incident in self.incidents:
+            data.append({
+                "incident_id": incident.incident_id,
+                "title": incident.title,
+                "attack_type": incident.attack_type,
+                "severity": incident.severity,
+                "status": incident.status
+            })
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=4)
+            
     
 
 
