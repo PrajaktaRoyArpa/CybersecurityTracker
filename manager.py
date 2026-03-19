@@ -77,7 +77,7 @@ class IncidentManager:
                         )
         console.print(table)
 
-    def save_to_file(self, filename="incidents.json"):
+    def save_file(self, filename="incidents.json"):
         data = []
         for incident in self.incidents:
             data.append({
@@ -89,7 +89,29 @@ class IncidentManager:
             })
         with open(filename, "w") as f:
             json.dump(data, f, indent=4)
-            
+        
+    def load_file(self, filename="incidents.json"):
+        try:
+            with open(filename, "r") as file:
+                data = json.load(f)
+                self.incidents = []
+                for item in data:
+                    incident = Incident(
+                        item["incident_id"],
+                        item["title"],
+                        item["attack_type"],
+                        item["severity"],
+                        item["status"]
+                    )
+                self.incidents.append(incident)
+                if self.incidents:
+                    self.next_id = max(incident.incident_id for incident in self.incidents) + 1
+                else:
+                    self.next_id = 1
+        except FileNotFoundError:
+            print("No file found.")
+            pass
+        
     
 
 
