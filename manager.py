@@ -50,14 +50,18 @@ class IncidentManager:
                 return True
         return False
     
-    def search_incidents(self, keyword=None, severity=None, status=None):
+    def search_incidents(self, keyword=None, severity=None):
         results = []
         for incident in self.incidents:
-            if (keyword and keyword.lower() not in incident.title.lower()):
-               continue
-            if severity and incident.severity.lower() != severity.lower():
-                continue
-            results.append(incident)
+            title_match = True 
+            severity_match = True
+
+            if keyword:
+                title_match = keyword.lower() in incident.title.lower()
+            if severity: 
+                severity_match = severity.lower() == incident.severity.lower()
+            if title_match and severity_match:
+                results.append(incident)
         return results
     
     def display_incidents(self, incidents): 
@@ -87,14 +91,14 @@ class IncidentManager:
                 "severity": incident.severity,
                 "status": incident.status
             })
-        with open(filename, "w") as f:
-            json.dump(data, f, indent=4)
+        with open(filename, "w") as file:
+            json.dump(data, file, indent=4)
         
-    def load_file(self, filename="incidents.json"):
+    def load_file(self):
         try:
-            with open(filename, "r") as file:
-                data = json.load(f)
-                self.incidents = []
+            with open("data.json", "r") as file:
+                data = json.load(file)
+                
                 for item in data:
                     incident = Incident(
                         item["incident_id"],
@@ -103,15 +107,14 @@ class IncidentManager:
                         item["severity"],
                         item["status"]
                     )
-                self.incidents.append(incident)
-                if self.incidents:
-                    self.next_id = max(incident.incident_id for incident in self.incidents) + 1
-                else:
-                    self.next_id = 1
+                    self.incidents.append(incident)
+                if data:
+                    self.next_id = max(item["incident_id"] for item in data) + 1
+                
         except FileNotFoundError:
             print("No file found.")
             pass
-        
+
     
 
 

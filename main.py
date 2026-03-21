@@ -1,11 +1,14 @@
-
 from manager import IncidentManager
 
 def main():
     manager = IncidentManager()
+    manager.load_file()
+    
+    from rich import print
 
     while True: 
-        print("Cybersecurity Incident Tracker")
+        print("\n[bold cyan]CYBERSECURITY INCIDENT TRACKER[/bold cyan]")
+        print("-" * 50)
         print("1. Create Incident")
         print("2. List Incidents")
         print("3. Update Incident status")
@@ -59,7 +62,8 @@ def main():
                 print("No matching incidents found.")
         
         elif choice == "6":
-            print("Exiting...")
+            manager.save_file()
+            print("Data saved. Now exiting.")
             break
         
         else:
@@ -67,3 +71,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
