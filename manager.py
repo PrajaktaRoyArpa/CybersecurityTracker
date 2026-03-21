@@ -115,6 +115,23 @@ class IncidentManager:
             print("No file found.")
             pass
 
+    def generate_report(self): 
+        report ={
+            "High": 0, "Medium": 0, "Low": 0
+             }
+
+        for incident in self.incidents: 
+            sev = incident.severity.capitalize()
+            if sev in report: 
+                report[sev] += 1
+        return report
     
-
-
+    def display_report(self, report): 
+        console = Console()
+        table = Table(title="Incident Severity Report")
+        table.add_column("Severity", justify="center", style="red")
+        table.add_column("Count", justify="center", style="cyan")
+        report = self.generate_report()
+        for severity, count in report.items():
+            table.add_row(severity, str(count))
+        console.print(table)
